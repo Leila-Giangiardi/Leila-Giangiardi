@@ -1,25 +1,26 @@
-name: Deploy to GitHub Pages
+name: Generate Datas
 
 on:
-  push:
-    branches:
-      - main  # Ou o branch de onde você quer fazer o deploy
+  schedule: # execute every 12 hours
+    - cron: "* */12 * * *"
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
+    name: Jobs to update datas
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build project
-        run: npm run build  # Ou o comando que você usa para construir o projeto
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Snake Animation
+      - uses: Platane/snk@master
+        id: snake-gif
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
+          github_user_name: Leila-Giangiardi
+          svg_out_path: dist/github-contribution-grid-snake.svg
 
+      - uses: crazy-max/ghaction-github-pages@v2.1.3
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   
